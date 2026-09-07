@@ -1,26 +1,177 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* Reuse shadcn's built-in dark-mode polish (input opacity, etc.) for our
+   night surfaces — there is no separate user-toggled dark mode. */
+@custom-variant dark (&:is(.night *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-bricolage);
+
+  /* Raw brand palette (section 7 of the spec) — theme-independent, always
+     available as bg-night, text-glow, bg-verified, etc. */
+  --color-night: var(--night);
+  --color-night-2: var(--night-2);
+  --color-glow: var(--glow);
+  --color-plum-lit: var(--plum-lit);
+  --color-paper: var(--paper);
+  --color-mist: var(--mist);
+  --color-ink: var(--ink);
+  --color-plum: var(--plum);
+  --color-plum-lift: var(--plum-lift);
+  --color-verified: var(--verified);
+  --color-danger-brand: var(--danger);
+
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * Two surfaces, not a light/dark toggle. Night surfaces (marketing,
+ * discovery) always render the amber-on-plum palette; day surfaces
+ * (every dashboard, KYC, payment, admin) always render the paper-white
+ * palette — regardless of OS preference. Layouts apply the `.night`
+ * class to their root wrapper; `:root` alone is the day default.
+ */
+:root {
+  /* Raw brand palette */
+  --night: #14101c;
+  --night-2: #221a2e;
+  --glow: #f2b441;
+  --plum-lit: #a94f92;
+  --paper: #faf8fb;
+  --mist: #f0ebf3;
+  --ink: #1b1424;
+  --plum: #6b2d5c;
+  --plum-lift: #8a3d76;
+  --verified: #1d9e75;
+  --danger: #c0392b;
+
+  /* Day surface (default) */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: #ffffff;
+  --card-foreground: var(--ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--ink);
+  --primary: var(--plum);
+  --primary-foreground: var(--paper);
+  --secondary: var(--mist);
+  --secondary-foreground: var(--ink);
+  --muted: var(--mist);
+  --muted-foreground: oklch(0.44 0.03 320);
+  --accent: var(--mist);
+  --accent-foreground: var(--plum);
+  --destructive: var(--danger);
+  --border: oklch(0.88 0.02 320);
+  --input: oklch(0.88 0.02 320);
+  --ring: var(--plum);
+  --chart-1: var(--plum);
+  --chart-2: var(--plum-lit);
+  --chart-3: var(--glow);
+  --chart-4: var(--verified);
+  --chart-5: var(--plum-lift);
+  --radius: 0.625rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--plum);
+  --sidebar-primary-foreground: var(--paper);
+  --sidebar-accent: var(--mist);
+  --sidebar-accent-foreground: var(--plum);
+  --sidebar-border: oklch(0.88 0.02 320);
+  --sidebar-ring: var(--plum);
+}
+
+.night {
+  --background: var(--night);
+  --foreground: oklch(0.96 0.01 320);
+  --card: var(--night-2);
+  --card-foreground: oklch(0.96 0.01 320);
+  --popover: var(--night-2);
+  --popover-foreground: oklch(0.96 0.01 320);
+  --primary: var(--plum-lit);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: var(--night-2);
+  --secondary-foreground: oklch(0.96 0.01 320);
+  --muted: var(--night-2);
+  --muted-foreground: oklch(0.72 0.02 320);
+  --accent: var(--night-2);
+  --accent-foreground: var(--glow);
+  --destructive: var(--danger);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: var(--glow);
+  --chart-1: var(--glow);
+  --chart-2: var(--plum-lit);
+  --chart-3: var(--verified);
+  --chart-4: var(--plum-lift);
+  --chart-5: oklch(0.7 0.05 320);
+  --sidebar: var(--night-2);
+  --sidebar-foreground: oklch(0.96 0.01 320);
+  --sidebar-primary: var(--plum-lit);
+  --sidebar-primary-foreground: oklch(0.98 0 0);
+  --sidebar-accent: var(--night);
+  --sidebar-accent-foreground: var(--glow);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: var(--glow);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+  .eyebrow {
+    @apply text-[11px] font-medium tracking-[0.08em] uppercase;
+  }
 }
