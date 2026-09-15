@@ -51,7 +51,7 @@ export default async function HomePage() {
         </FadeIn>
         <FadeIn delay={0.16}>
           <p className="mt-4 max-w-xl text-muted-foreground">
-            Reallllllll house rules up front, verified owners, no surprises. PartySpace connects private
+            Realll house rules up front, verified owners, no surprises. PartySpace connects private
             spaces with the people planning the next get-together.
           </p>
         </FadeIn>
